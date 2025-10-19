@@ -1,0 +1,79 @@
+# Comandos del Proyecto PyScale VPN Mesh
+
+## Comandos del Cliente (client.cli)
+
+Estos comandos se ejecutan directamente desde la terminal.
+
+-   `python -m client.cli connect --name <nombre_de_tu_nodo>`:
+    Registra y conecta un nodo a la red PyScale. Si el nodo ya está registrado, lo conecta.
+    -   `--name <nombre_de_tu_nodo>`: (Requerido) Nombre único para este nodo.
+    -   `--server <URL_del_servidor>`: (Opcional) URL del servidor PyScale (por defecto: `http://localhost:8000`).
+
+-   `python -m client.cli status`:
+    Muestra el estado actual del nodo, incluyendo su ID, IP asignada, servidor, interfaz WireGuard y un resumen de los peers conectados.
+    -   `--server <URL_del_servidor>`: (Opcional) URL del servidor PyScale.
+
+-   `python -m client.cli peers`:
+    Lista todos los peers conocidos por el cliente, mostrando su nombre, ID, IP, endpoint y estado (Online/Offline).
+    -   `--server <URL_del_servidor>`: (Opcional) URL del servidor PyScale.
+
+-   `python -m client.cli ping <peer_name_or_id>`:
+    Envía un ping a un peer específico por su nombre o ID para verificar la conectividad.
+    -   `<peer_name_or_id>`: (Requerido) Nombre o ID del peer al que se desea hacer ping.
+    -   `--server <URL_del_servidor>`: (Opcional) URL del servidor PyScale.
+
+-   `python -m client.cli message <peer_name_or_id> <mensaje>`:
+    Envía un mensaje directo encriptado a un peer específico.
+    -   `<peer_name_or_id>`: (Requerido) Nombre o ID del peer destino.
+    -   `<mensaje>`: (Requerido) Contenido del mensaje a enviar.
+    -   `--server <URL_del_servidor>`: (Opcional) URL del servidor PyScale.
+
+-   `python -m client.cli monitor`:
+    Inicia un monitor en tiempo real de la red, mostrando el estado de tu nodo y los peers en un panel interactivo.
+    -   `--server <URL_del_servidor>`: (Opcional) URL del servidor PyScale.
+
+## Comandos del Cliente Interactivo (client.client_admin_cli)
+
+Este CLI proporciona un modo interactivo para ejecutar los comandos del cliente de forma más fluida.
+
+-   `python -m client.client_admin_cli interactive`:
+    Inicia el modo interactivo del cliente. Dentro de este modo, puedes escribir los siguientes comandos:
+    -   `status`: Muestra el estado actual del nodo.
+    -   `peers`: Lista todos los peers conocidos.
+    -   `ping <peer_name_or_id>`: Envía un ping a un peer específico.
+    -   `message <peer_name_or_id> <mensaje>`: Envía un mensaje a un peer específico.
+    -   `monitor`: Inicia un monitor en tiempo real de la red.
+    -   `help`: Muestra la ayuda de los comandos interactivos.
+    -   `exit`: Sale del modo interactivo.
+    -   `--server <URL_del_servidor>`: (Opcional, se pasa al iniciar `interactive`) URL del servidor PyScale.
+
+## Comandos del Servidor Administrativo (server.server_admin_cli)
+
+Este CLI permite la administración de los nodos registrados en el servidor PyScale.
+
+-   `python -m server.server_admin_cli list-nodes`:
+    Lista todos los nodos registrados en el servidor, mostrando su información completa (ID, nombre, IP, etc.).
+    -   `--server <URL_del_servidor>`: (Opcional) URL del servidor PyScale Admin (por defecto: `http://localhost:8000`).
+
+-   `python -m server.server_admin_cli get-node <node_id>`:
+    Obtiene información detallada de un nodo específico por su ID.
+    -   `<node_id>`: (Requerido) ID completo del nodo a consultar.
+    -   `--server <URL_del_servidor>`: (Opcional) URL del servidor PyScale Admin.
+
+-   `python -m server.server_admin_cli delete-node <node_id>`:
+    Elimina un nodo del servidor por su ID. **¡Esta acción es irreversible!**
+    -   `<node_id>`: (Requerido) ID completo del nodo a eliminar.
+    -   `--server <URL_del_servidor>`: (Opcional) URL del servidor PyScale Admin.
+
+-   `python -m server.server_admin_cli update-node <node_id> [opciones]`:
+    Actualiza la información de un nodo por su ID. Se deben proporcionar al menos una de las opciones de actualización.
+    -   `<node_id>`: (Requerido) ID completo del nodo a actualizar.
+    -   `--name <nuevo_nombre>`: (Opcional) Nuevo nombre para el nodo.
+    -   `--public-key <nueva_clave_publica>`: (Opcional) Nueva clave pública WireGuard en base64.
+    -   `--ip-address <nueva_ip>`: (Opcional) Nueva dirección IP asignada al nodo (ej. `10.100.0.X/24`).
+    -   `--endpoint <nuevo_endpoint>`: (Opcional) Nuevo endpoint público del nodo.
+    -   `--server <URL_del_servidor>`: (Opcional) URL del servidor PyScale Admin.
+
+-   `python -m server.server_admin_cli network-status`:
+    Muestra un resumen del estado general de la red PyScale, incluyendo el número total de nodos, nodos online y nodos vistos recientemente.
+    -   `--server <URL_del_servidor>`: (Opcional) URL del servidor PyScale Admin.
